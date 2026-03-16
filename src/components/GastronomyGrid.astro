@@ -74,14 +74,6 @@ const getSpanClass = (i: number): string => {
           class="h-full w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
           style="background: var(--surface);"
         />
-        {img.alt && (
-          <figcaption
-            class="absolute inset-x-0 bottom-0 translate-y-full rounded-b-xl px-3 py-2 text-xs font-light transition-transform duration-300 group-hover:translate-y-0"
-            style="background: var(--overlay-caption-gradient); color: var(--overlay-caption-text);"
-          >
-            {img.alt}
-          </figcaption>
-        )}
       </figure>
     ))}
     </div>
