@@ -1,0 +1,108 @@
+---
+/**
+ * Memories Section — Photo Mosaic Grid
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+const memoriesDir = path.resolve('public/images/memories');
+let memoryImages: string[] = [];
+
+try {
+  const files = fs.readdirSync(memoriesDir);
+  memoryImages = files
+    .filter((f: string) => /\.(webp|jpg|jpeg|png)$/i.test(f))
+    .sort()
+    .map((f: string) => `/images/memories/${f}`);
+} catch {
+  // Directory not populated yet
+}
+
+const totalCount = memoryImages.length;
+const displayCount = totalCount; // Show all available images naturally
+
+const getSpanClass = (i: number): string => {
+  // Adjusted math for a more balanced look with fewer photos
+  if (i === 0) return 'col-span-2 row-span-2';
+  if (i % 5 === 2) return 'col-span-2 row-span-2';
+  if (i % 8 === 4) return 'col-span-2';
+  return '';
+};
+---
+
+<section id="memories" class="relative">
+  <div class="memory-reveal mb-14 text-center">
+    <h2
+      class="mb-3 font-display text-4xl tracking-tight sm:text-5xl"
+      style="color: var(--text-primary);"
+    >
+      memories
+    </h2>
+  </div>
+
+  {memoryImages.length > 0 ? (
+    <div class="mx-auto grid max-w-6xl grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-3 overflow-hidden px-6 sm:auto-rows-[220px] sm:grid-cols-3 sm:px-8 md:grid-cols-4 lg:grid-cols-5">
+      {memoryImages.slice(0, displayCount).map((src, i) => (
+        <figure
+          class={`memory-reveal memory-item group relative cursor-pointer overflow-hidden rounded-xl ${getSpanClass(i)}`}
+          style={`--reveal-delay: ${(i % 10) * 50}ms;`}
+          data-lightbox-src={src}
+        >
+          <img
+            src={src}
+            alt={`Personal photograph ${i + 1} of ${displayCount}`}
+            loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style="background: var(--surface);"
+          />
+        </figure>
+      ))}
+    </div>
+  ) : (
+    <p class="text-center text-sm" style="color: var(--text-secondary);">
+      Photos coming soon.
+    </p>
+  )}
+</section>
+
+<style>
+  .memory-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .memory-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .memory-item:hover img {
+    transform: scale(1.05);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.05 }
+  );
+  document.querySelectorAll('.memory-reveal').forEach((el) => observer.observe(el));
+
+  document.querySelectorAll('.memory-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      const src = (item as HTMLElement).dataset.lightboxSrc;
+      if (src) {
+        window.dispatchEvent(new CustomEvent('open-lightbox', { detail: { src } }));
+      }
+    });
+  });
+</script>

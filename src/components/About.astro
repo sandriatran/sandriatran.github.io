@@ -1,0 +1,272 @@
+---
+/**
+ * About Section — Editorial Split Layout
+ */
+
+const roles = [
+  { label: 'Design Engineer' },
+  { label: 'Creative Technologist' },
+  { label: 'Researcher' },
+];
+
+const socialLinks = [
+  { label: 'Instagram', href: 'https://www.instagram.com/thesoftbunnyxx', icon: 'instagram' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/sandriat', icon: 'linkedin' },
+  { label: 'Beacons', href: 'https://www.beacons.ai/thesoftbunnyxx', icon: 'beacons' },
+];
+---
+
+<section id="about" class="relative overflow-hidden" style="padding-top: 120px;">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="about-reveal">
+
+      <div class="mb-10 text-center">
+        <h2 class="font-display text-4xl leading-none tracking-tight sm:text-5xl" style="color: var(--text-primary);">
+          about
+        </h2>
+      </div>
+
+      <!-- Editorial two-column layout -->
+      <div class="about-editorial grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+
+        <!-- Left column: Pull quote + tags + social links -->
+        <div class="about-left flex flex-col items-center lg:items-end text-center lg:text-right">
+          <blockquote class="about-pull-quote mb-8 lg:mb-10">
+            <p>design engineer, creative technologist, researcher</p>
+          </blockquote>
+
+          <!-- Social links — same pill styling as role tags -->
+          <div class="about-pill-stack">
+            {socialLinks.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="about-pill about-pill--link"
+                aria-label={`Visit ${link.label}`}
+              >
+                {link.icon === 'instagram' && (
+                  <svg class="about-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                )}
+                {link.icon === 'linkedin' && (
+                  <svg class="about-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+                    <rect x="2" y="9" width="4" height="12" />
+                    <circle cx="4" cy="4" r="2" />
+                  </svg>
+                )}
+                {link.icon === 'beacons' && (
+                  <svg class="about-pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>
+                )}
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right column: Body text -->
+        <div class="about-body">
+
+          <!-- Kicker pills above prose -->
+          <div class="about-kicker">
+            {roles.map((role) => (
+              <span class="about-pill">{role.label}</span>
+            ))}
+          </div>
+
+          <div class="about-prose">
+            <p class="about-first-para">
+              I'm Sandria Tran (she/her) — a filmmaker, designer, and gastronome based between Orange County, California and Edinburgh, Scotland, UK.
+            </p>
+            <p>
+              My creative practice is rooted in visual storytelling, beginning with classical <span class="spotlight-term">analogue photography</span> and early exhibitions that led me to the USC School of Cinematic Arts to train in traditional film and <span class="spotlight-term">new media arts</span> where I graduated <em>Magna Cum Laude</em> and <em>Phi Beta Kappa</em>.
+            </p>
+            <p>
+              Driven by post-baccalaureate foundations in <span class="spotlight-term">Computer Science</span> and <span class="spotlight-term">Mathematics</span>, I found myself drawn to interdisciplinary work in STEM. As an MSc student in Mind, Language, and Embodied Cognition (<span class="spotlight-term">Cognitive Science</span> &amp; Philosophy of Mind) and Programme Representative at the University of Edinburgh, I explore cognitive science while researching <span class="spotlight-term">autonomous navigation</span> at the Centre for AI in Assistive Autonomy.
+            </p>
+            <p>
+              My philanthropic work centres on interconnected ecosystems and kinder communities. I serve as an ambassador for the Scottish SPCA, champion <span class="spotlight-term">food sovereignty</span> through <a href="https://www.instagram.com/thesoftbunnyxxfoundation" target="_blank" rel="noopener" class="about-link">@TheSoftBunnyxxFoundation</a>, share culinary narratives via <a href="https://www.instagram.com/thesoftbunnyxx" target="_blank" rel="noopener" class="about-link">@TheSoftBunnyxx</a>, and foster early scientific curiosity with my STEAM nonprofit <a href="https://www.instagram.com/cerebralconstellations" target="_blank" rel="noopener" class="about-link">@CerebralConstellations</a>.
+            </p>
+            <p>
+              Outside the classroom, I'm anchored in wellness — lagree, hot yoga, pilates, and strength training. Whether hiking, skiing, surfing, or beekeeping, I find balance in exploring the natural world and navigating uncharted domains.
+            </p>
+          </div>
+
+          <!-- Connect CTA -->
+          <div class="about-connect-row">
+            <p class="about-connect-cta">
+              Be free to <a href="mailto:s2890588@ed.ac.uk" class="about-link">connect</a>
+              <span class="about-connect-arrow">&rarr;</span>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .about-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* ── Pull quote — Cormorant Garamond light italic ── */
+  .about-pull-quote p {
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    opacity: 0.88;
+  }
+
+  /* ── Kicker row above prose ── */
+  .about-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1.8rem;
+  }
+
+  /* ── Unified pill system — roles + social use identical styling ── */
+  .about-pill-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem;
+  }
+
+  @media (min-width: 1024px) {
+    .about-pill-stack {
+      justify-content: flex-end;
+    }
+  }
+
+  .about-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-accent);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 9999px;
+    padding: 5px 14px;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .about-pill-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Link pills: hover state */
+  .about-pill--link {
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .about-pill--link:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-lavender);
+    background: color-mix(in srgb, var(--accent-lavender) 12%, var(--surface));
+    box-shadow: 0 2px 12px color-mix(in srgb, var(--accent-lavender) 25%, transparent);
+    transform: translateY(-1px);
+  }
+
+  /* ── Prose container ── */
+  .about-prose {
+    max-width: 600px;
+  }
+
+  .about-prose p {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--text-primary);
+    margin-bottom: 1.4em;
+  }
+
+  /* ── Links ── */
+  .about-link {
+    color: var(--accent-blue);
+    text-decoration: none;
+    background-image: linear-gradient(var(--accent-blue), var(--accent-blue));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .about-link:hover {
+    background-size: 100% 1px;
+  }
+
+  /* ── Connect CTA ── */
+  .about-connect-row {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--accent-lavender) 20%, transparent);
+  }
+
+  .about-connect-cta {
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0;
+    color: var(--accent-blue);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+
+  .about-connect-arrow {
+    display: inline-block;
+    font-size: 0.85em;
+    font-style: normal;
+    transition: transform 0.3s ease;
+  }
+
+  .about-connect-cta:hover .about-connect-arrow {
+    transform: translateX(6px);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+  document.querySelectorAll('.about-reveal').forEach((el) => observer.observe(el));
+</script>

@@ -1,0 +1,126 @@
+---
+/**
+ * Gastronomy Section — Masonry Photo Grid
+ */
+
+import fs from 'node:fs';
+import path from 'node:path';
+
+const gastroDir = path.resolve('public/images/gastronomy');
+let images: { src: string; alt: string }[] = [];
+
+try {
+  const files = fs.readdirSync(gastroDir);
+  const isUUID = (name: string) => /^[0-9A-F]{8}-[0-9A-F]{4}/i.test(name);
+  const isScreenshot = (name: string) => /^Screen/i.test(name);
+  const isIMG = (name: string) => /^IMG[_-]/i.test(name);
+
+  // Build image list
+  const allImages = files
+    .filter((f: string) => /\.(webp|jpg|jpeg|png)$/i.test(f))
+    .sort()
+    .map((f: string, i: number) => {
+      const baseName = f.replace(/\.(webp|jpg|jpeg|png)$/i, '');
+      let alt: string = '';
+      if (!isUUID(baseName) && !isScreenshot(baseName) && !isIMG(baseName)) {
+        alt = baseName.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
+        alt = alt.charAt(0).toUpperCase() + alt.slice(1);
+      }
+      return { src: `/images/gastronomy/${f}`, alt };
+    });
+
+  // Deduplicate by filename base (remove variants like "(1)")
+  const seen = new Set<string>();
+  images = allImages.filter(img => {
+    const base = img.src.replace(/[-\s]*\(\d+\)/, '');
+    if (seen.has(base)) return false;
+    seen.add(base);
+    return true;
+  });
+} catch {
+  // Directory not populated yet
+}
+
+const getSpanClass = (i: number): string => {
+  if (i === 0) return 'col-span-2 row-span-2';
+  if (i % 7 === 3) return 'col-span-2 row-span-2';
+  if (i % 9 === 5) return 'col-span-2';
+  return '';
+};
+---
+
+<section id="gastronomy" class="relative">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="gastro-reveal mb-14 text-center">
+      <h2
+        class="mb-3 font-display text-4xl tracking-tight sm:text-5xl"
+        style="color: var(--text-primary);"
+      >
+        gastronomy
+      </h2>
+    </div>
+
+    <div class="mx-auto grid max-w-6xl grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-3 overflow-hidden sm:auto-rows-[220px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    {images.map((img, i) => (
+      <figure
+        class={`gastro-reveal gastro-item group relative cursor-pointer overflow-hidden rounded-xl ${getSpanClass(i)}`}
+        style={`--reveal-delay: ${(i % 10) * 60}ms;`}
+        data-lightbox-src={img.src}
+      >
+        <img
+          src={img.src}
+          alt={img.alt}
+          loading="lazy"
+          class="h-full w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
+          style="background: var(--surface);"
+        />
+        {img.alt && (
+          <figcaption
+            class="absolute inset-x-0 bottom-0 translate-y-full rounded-b-xl px-3 py-2 text-xs font-light transition-transform duration-300 group-hover:translate-y-0"
+            style="background: var(--overlay-caption-gradient); color: var(--overlay-caption-text);"
+          >
+            {img.alt}
+          </figcaption>
+        )}
+      </figure>
+    ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gastro-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .gastro-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.gastro-reveal').forEach((el) => observer.observe(el));
+
+  document.querySelectorAll('.gastro-item').forEach((item) => {
+    item.addEventListener('click', () => {
+      const src = (item as HTMLElement).dataset.lightboxSrc;
+      if (src) {
+        window.dispatchEvent(new CustomEvent('open-lightbox', { detail: { src } }));
+      }
+    });
+  });
+</script>

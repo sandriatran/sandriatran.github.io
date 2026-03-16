@@ -1,0 +1,170 @@
+---
+/**
+ * Base layout wrapping every page.
+ * Handles: HTML shell, meta tags, font loading, theme initialization script,
+ * global styles, aurora background, and keyboard shortcuts overlay.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Sandria Tran — Portfolio',
+  description = 'Explore the creative portfolio of Sandria Tran: nonprofit leadership, research, design, and sustainable gastronomy.',
+} = Astro.props;
+
+import '../styles/global.css';
+import '../styles/animations.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sandriatran.github.io" />
+
+    <!-- Fonts: Google CDN for Lexend Deca + Montserrat, self-hosted Cal Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lexend+Deca:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- Theme initialization: runs before paint to prevent flash -->
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+          && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="font-body antialiased">
+    <!-- Aurora background layer -->
+    <div class="aurora-bg" aria-hidden="true"></div>
+
+    <slot />
+
+    <!-- Keyboard shortcuts — bottom tray -->
+    <div
+      id="keyboard-overlay"
+      class="kb-tray"
+      style="transform: translateY(100%); pointer-events: none;"
+    >
+      <div class="kb-tray-inner">
+        <div class="kb-tray-grid">
+          <button class="kb-key" data-key="d"><kbd>D</kbd><span>theme</span></button>
+          <button class="kb-key" data-key="h"><kbd>H</kbd><span>home</span></button>
+          <button class="kb-key" data-key="a"><kbd>A</kbd><span>about</span></button>
+          <button class="kb-key" data-key="p"><kbd>P</kbd><span>work</span></button>
+          <button class="kb-key" data-key="g"><kbd>G</kbd><span>gastro</span></button>
+          <button class="kb-key" data-key="m"><kbd>M</kbd><span>memories</span></button>
+          <button class="kb-key" data-key="s"><kbd>S</kbd><span>spot</span></button>
+          <button class="kb-key" data-key="l"><kbd>L</kbd><span>cursor</span></button>
+          <button class="kb-key kb-key--close" data-key="Escape"><kbd>esc</kbd><span>close</span></button>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .kb-tray {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        opacity: 0;
+      }
+      .kb-tray.kb-tray--open {
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+        opacity: 1;
+      }
+      .kb-tray-inner {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 16px 20px 24px;
+        background: var(--nav-bg);
+        backdrop-filter: blur(24px) saturate(160%);
+        -webkit-backdrop-filter: blur(24px) saturate(160%);
+        border-top: 1px solid var(--surface-border);
+        border-radius: 1.25rem 1.25rem 0 0;
+        box-shadow: 0 -8px 40px -8px rgba(0,0,0,0.12), 0 0 0 1px var(--surface-border);
+      }
+      .kb-tray-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+      }
+      .kb-key {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid var(--surface-border);
+        background: var(--surface);
+        color: var(--text-secondary);
+        font-family: var(--font-accent);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .kb-key:hover {
+        color: var(--text-primary);
+        border-color: var(--accent-lavender);
+        background: color-mix(in srgb, var(--accent-lavender) 12%, var(--surface));
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-lavender) 20%, transparent);
+      }
+      .kb-key kbd {
+        font-family: var(--font-accent);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: var(--nav-logo-bg);
+        border: 1px solid var(--surface-border);
+        border-radius: 4px;
+        padding: 1px 6px;
+        line-height: 1.4;
+      }
+      .kb-key--close {
+        border-color: color-mix(in srgb, var(--accent-lavender) 40%, var(--surface-border));
+      }
+      .kb-key--close kbd {
+        font-weight: 500;
+        font-size: 10px;
+      }
+    </style>
+
+    <script is:inline>
+      document.querySelectorAll('.kb-key').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.key;
+          if (key) {
+            document.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+/* Bokeh floating */
+@keyframes bokeh-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(80px, -60px) scale(1.15); }
+  50% { transform: translate(-40px, 80px) scale(0.9); }
+  75% { transform: translate(60px, 40px) scale(1.05); }
+}
+
+@keyframes bokeh-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-90px, 50px) scale(1.1); }
+  50% { transform: translate(60px, -70px) scale(0.88); }
+  75% { transform: translate(-30px, -40px) scale(1.06); }
+}
+
+@keyframes bokeh-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(70px, 80px) scale(1.18); }
+  66% { transform: translate(-60px, -30px) scale(0.85); }
+}
+
+@keyframes bokeh-float-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-60px, -50px) scale(1.08); }
+  40% { transform: translate(50px, 70px) scale(0.92); }
+  60% { transform: translate(80px, -30px) scale(1.12); }
+  80% { transform: translate(-40px, 50px) scale(0.95); }
+}
+
+@keyframes bokeh-float-5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30% { transform: translate(40px, -90px) scale(1.1); }
+  60% { transform: translate(-70px, 40px) scale(0.93); }
+}
+
+@keyframes bokeh-float-6 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  15% { transform: translate(-50px, 30px) scale(1.06); }
+  45% { transform: translate(30px, -60px) scale(0.94); }
+  70% { transform: translate(60px, 50px) scale(1.08); }
+}
+
+/* Hero */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(10px); opacity: 0.8; }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes hero-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Aurora */
+@keyframes aurora-flux {
+  0% { background-position: 0% 50%; }
+  33% { background-position: 100% 0%; }
+  66% { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Glass card glimmer */
+@keyframes glimmer {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
+}
+
+/* Section glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.65; }
+}

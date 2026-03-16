@@ -1,0 +1,231 @@
+---
+/**
+ * Footer — Giant Wordmark
+ */
+const year = new Date().getFullYear();
+const socialLinks = [
+  { href: "https://www.instagram.com/thesoftbunnyxx", label: "IG" },
+  { href: "https://www.linkedin.com/in/sandriat", label: "LinkedIn" },
+  { href: "https://www.beacons.ai/thesoftbunnyxx", label: "Beacons" },
+];
+---
+
+<footer class="giant-footer">
+  <div class="giant-footer__inner">
+
+    <!-- Giant name -->
+    <div class="giant-footer__name-block">
+      <a href="#hero" class="giant-footer__name font-display" aria-label="Back to top">
+        <span class="giant-footer__line1">sandria</span>
+        <span class="giant-footer__line2">
+          <span class="giant-footer__tran">tran</span>
+          <!-- Social links float in the negative space next to "tran" -->
+          <!-- ZONE 2: SOCIALS -->
+          <nav class="flex justify-center items-center gap-4 md:col-span-2 lg:col-span-1 order-3 lg:order-2 mt-8 lg:mt-0 font-accent tracking-widest uppercase text-xs" aria-label="Social links">
+            {socialLinks.map((link, index) => (
+              <Fragment key={link.href}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200"
+                >
+                  {link.label === 'Instagram' ? 'IG' : link.label}
+                </a>
+                {index < socialLinks.length - 1 && (
+                  <span class="text-[var(--text-secondary)] opacity-40 select-none">&middot;</span>
+                )}
+              </Fragment>
+            ))}
+          </nav>
+        </span>
+      </a>
+    </div>
+
+    <!-- Bottom utility row -->
+    <div class="giant-footer__bottom">
+      <div class="giant-footer__left">
+        <span class="giant-footer__status">
+          <span class="giant-footer__pulse"></span>
+          Available
+        </span>
+        <span class="giant-footer__dot">&middot;</span>
+        <a href="mailto:s2890588@ed.ac.uk" class="giant-footer__cta">
+          say hello <span class="giant-footer__arrow">&#8599;</span>
+        </a>
+      </div>
+      <div class="giant-footer__right">
+        <span class="giant-footer__copy">&copy; {year} Sandria Tran</span>
+        <span class="giant-footer__dot">&middot;</span>
+        <a href="#hero" class="giant-footer__top-link">
+          Back to top
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<style>
+  .giant-footer {
+    position: relative;
+    padding: 0 max(24px, 5vw);
+    margin-top: 80px;
+    overflow: hidden;
+  }
+
+  .giant-footer__inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 0 32px;
+    border-top: 1px solid var(--surface-border);
+  }
+
+  /* ─── Giant Name ─── */
+  .giant-footer__name-block {
+    margin-bottom: 40px;
+  }
+
+  .giant-footer__name {
+    display: block;
+    text-decoration: none;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    opacity: 0.12;
+    transition: opacity 0.4s ease;
+  }
+
+  .giant-footer__name:hover {
+    opacity: 0.25;
+  }
+
+  .giant-footer__line1 {
+    display: block;
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 200;
+  }
+
+  .giant-footer__line2 {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(20px, 4vw, 60px);
+  }
+
+  .giant-footer__tran {
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 200;
+  }
+
+  /* ─── Bottom utility row ─── */
+  .giant-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  .giant-footer__left,
+  .giant-footer__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .giant-footer__dot {
+    opacity: 0.3;
+  }
+
+  /* Status */
+  .giant-footer__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--status-green);
+    font-weight: 500;
+  }
+
+  .giant-footer__pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--status-green);
+    animation: giant-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes giant-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* CTA link */
+  .giant-footer__cta {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+  }
+
+  .giant-footer__cta:hover {
+    opacity: 0.7;
+  }
+
+  .giant-footer__arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .giant-footer__cta:hover .giant-footer__arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Copyright */
+  .giant-footer__copy {
+    opacity: 0.5;
+  }
+
+  /* Back to top */
+  .giant-footer__top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .giant-footer__top-link:hover {
+    opacity: 1;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 640px) {
+    .giant-footer {
+      margin-top: 60px;
+    }
+
+    .giant-footer__inner {
+      padding: 40px 0 24px;
+    }
+
+    .giant-footer__name-block {
+      margin-bottom: 28px;
+    }
+
+    .giant-footer__line2 {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .giant-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+  }
+</style>

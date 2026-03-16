@@ -1,0 +1,249 @@
+---
+/**
+ * Hero — Bokeh Immersion (desktop) + Cinematic Split (mobile)
+ */
+---
+
+<section
+  id="hero"
+  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden"
+>
+  <!-- Amplified bokeh atmosphere -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="bokeh-orb animate-bokeh-1 absolute left-[2%] top-[5%] h-[650px] w-[650px] rounded-full blur-[100px]" style="background: var(--bokeh-1); opacity: 0.9; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-2 absolute right-[5%] top-[8%] h-[600px] w-[600px] rounded-full blur-[110px]" style="background: var(--bokeh-2); opacity: 0.85; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-3 absolute bottom-[10%] left-[15%] h-[500px] w-[500px] rounded-full blur-[90px]" style="background: var(--bokeh-3); opacity: 0.8; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-4 absolute bottom-[20%] right-[0%] h-[480px] w-[480px] rounded-full blur-[100px]" style="background: var(--bokeh-4); opacity: 0.7; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-5 absolute left-[35%] top-[30%] h-[380px] w-[380px] rounded-full blur-[70px]" style="background: var(--bokeh-5); opacity: 0.6; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-6 absolute right-[20%] top-[50%] h-[420px] w-[420px] rounded-full blur-[80px]" style="background: var(--bokeh-6); opacity: 0.65; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-3 absolute left-[50%] top-[15%] h-[350px] w-[350px] -translate-x-1/2 rounded-full blur-[80px]" style="background: var(--accent-pink); opacity: 0.35; mix-blend-mode: screen;"></div>
+    <div class="bokeh-orb animate-bokeh-5 absolute bottom-[25%] left-[40%] h-[300px] w-[300px] rounded-full blur-[70px]" style="background: var(--accent-lavender); opacity: 0.3; mix-blend-mode: screen;"></div>
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse 70% 60% at 50% 45%, transparent 30%, var(--bg-primary) 100%);"></div>
+  </div>
+
+  <!-- Bottom fade -->
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-[25vh]"
+    aria-hidden="true"
+    style="background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);"
+  ></div>
+
+  <!-- ============ DESKTOP: Bokeh Immersion (centered) ============ -->
+  <div class="hero-desktop relative z-10 flex flex-col items-center">
+    <h1
+      class="hero-name font-display tracking-tight text-center"
+      style="letter-spacing: -0.03em;"
+      aria-label="Sandria Tran"
+    >
+      <span class="hero-gradient-text mr-3 inline-block sm:mr-5">sandria</span>
+      <span class="hero-gradient-text hero-dissolve inline-block">tran</span>
+    </h1>
+
+    <p
+      class="hero-byline mt-6 font-accent text-sm tracking-[0.18em] uppercase sm:text-base"
+      style="color: var(--text-primary); font-weight: 500; opacity: 0.85;"
+    >
+      design engineer&ensp;&middot;&ensp;creative technologist&ensp;&middot;&ensp;researcher
+    </p>
+  </div>
+
+  <!-- ============ MOBILE: Cinematic Split ============ -->
+  <div class="hero-mobile relative z-10">
+    <div class="hero-mobile-name">
+      <h1
+        class="font-display"
+        style="letter-spacing: -0.03em;"
+        aria-label="Sandria Tran"
+      >
+        <span class="hero-mobile-line hero-gradient-text">sandria</span>
+        <span class="hero-mobile-line hero-gradient-text hero-dissolve-mobile">tran</span>
+      </h1>
+    </div>
+
+    <!-- Horizontal luminous divider -->
+    <div class="hero-mobile-divider" aria-hidden="true"></div>
+
+    <!-- Roles + CTA -->
+    <div class="hero-mobile-roles">
+      <span>design engineer</span>
+      <span>creative technologist</span>
+      <span>researcher</span>
+    </div>
+    <a
+      href="mailto:s2890588@ed.ac.uk"
+      class="hero-mobile-cta"
+    >
+      say hello →
+    </a>
+  </div>
+
+  <!-- Scroll chevron -->
+  <div class="absolute bottom-10 z-10 scroll-indicator" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary); opacity: 0.7;">
+      <path d="M6 9l6 6 6-6"></path>
+    </svg>
+  </div>
+</section>
+
+<style>
+  /* ── Shared ── */
+  .bokeh-orb { will-change: transform; }
+  :global(.dark) .bokeh-orb { mix-blend-mode: normal; }
+
+  .hero-gradient-text {
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-lavender), var(--accent-pink), var(--accent-blue), var(--accent-indigo));
+    background-size: 250% 250%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-gradient-shift 8s ease-in-out infinite;
+    filter: var(--hero-drop-shadow);
+  }
+
+  /* ── DESKTOP (≥768px): Bokeh Immersion ── */
+  .hero-desktop {
+    display: flex;
+  }
+  .hero-mobile {
+    display: none;
+  }
+
+  .hero-name {
+    font-size: clamp(3.5rem, 12vw, 10rem);
+    line-height: 1;
+  }
+
+  .hero-dissolve {
+    mask-image: linear-gradient(to right, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+  }
+
+  .hero-byline {
+    opacity: 0;
+    animation: fade-in-up 0.7s ease forwards;
+    animation-delay: 0.7s;
+  }
+
+  /* ── MOBILE (<768px): Cinematic Split ── */
+  @media (max-width: 767px) {
+    .hero-desktop {
+      display: none;
+    }
+    .hero-mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-mobile-name h1 {
+      font-size: clamp(2.6rem, 14vw, 4.5rem);
+      line-height: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-mobile-line {
+      display: block;
+    }
+
+    .hero-dissolve-mobile {
+      mask-image: linear-gradient(to right, black 55%, rgba(0,0,0,0.4) 100%);
+      -webkit-mask-image: linear-gradient(to right, black 55%, rgba(0,0,0,0.4) 100%);
+    }
+
+    .hero-mobile-divider {
+      width: 48px;
+      height: 1px;
+      margin: 1.5rem 0;
+      background: var(--accent-lavender);
+      opacity: 0.6;
+      box-shadow: 0 0 6px var(--accent-lavender), 0 0 16px color-mix(in srgb, var(--accent-lavender) 35%, transparent);
+      animation: axis-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes axis-pulse {
+      0%, 100% { opacity: 0.55; }
+      50% { opacity: 0.9; }
+    }
+
+    .hero-mobile-roles {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-accent);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      color: var(--text-secondary);
+      opacity: 0;
+      animation: fade-in-up 0.7s ease forwards;
+      animation-delay: 0.7s;
+    }
+
+    .hero-mobile-cta {
+      margin-top: 1.5rem;
+      font-family: var(--font-accent);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      opacity: 0;
+      animation: fade-in-up 0.7s ease forwards;
+      animation-delay: 1.1s;
+    }
+
+    .hero-mobile-cta:hover {
+      color: var(--accent-lavender);
+    }
+  }
+</style>
+
+<script>
+  let shortcutsVisible = false;
+  const overlay = document.getElementById("keyboard-overlay");
+
+  function toggleShortcuts() {
+    shortcutsVisible = !shortcutsVisible;
+    if (overlay) {
+      overlay.classList.toggle("kb-tray--open", shortcutsVisible);
+    }
+  }
+
+  window.addEventListener("toggle-shortcuts", toggleShortcuts);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (e.key === "?") { e.preventDefault(); toggleShortcuts(); return; }
+    if (e.key === "Escape" && shortcutsVisible) { toggleShortcuts(); return; }
+
+    const keyMap: Record<string, string | (() => void)> = {
+      h: "#hero",
+      a: "#about",
+      p: "#projects",
+      g: "#gastronomy",
+      m: "#memories",
+      s: () => { document.body.classList.toggle("spotlight-active"); },
+      e: () => { window.dispatchEvent(new CustomEvent("open-nback")); },
+      d: () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        document.documentElement.classList.toggle("dark", !isDark);
+        localStorage.setItem("theme", !isDark ? "dark" : "light");
+      },
+    };
+
+    const action = keyMap[e.key.toLowerCase()];
+    if (!action) return;
+    e.preventDefault();
+    if (shortcutsVisible) toggleShortcuts();
+    if (typeof action === "function") { action(); }
+    else { document.querySelector(action)?.scrollIntoView({ behavior: "smooth" }); }
+  });
+
+  overlay?.addEventListener("click", () => { if (shortcutsVisible) toggleShortcuts(); });
+</script>

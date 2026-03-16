@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import ProjectCards from '../components/ProjectCards.tsx';
+import GastronomyGrid from '../components/GastronomyGrid.astro';
+import MemoriesGrid from '../components/MemoriesGrid.astro';
+import Footer from '../components/Footer.astro';
+import Navigation from '../components/Navigation.tsx';
+import Lightbox from '../components/Lightbox.tsx';
+import KineticGrid from '../components/KineticGrid.tsx';
+import CustomCursor from '../components/CustomCursor.tsx';
+import NBackGame from '../components/NBackGame.tsx';
+---
+
+<Layout>
+  <NBackGame client:load />
+  <KineticGrid client:load />
+  <CustomCursor client:load />
+  <Navigation client:load />
+  <Lightbox client:load />
+
+  <main>
+    <Hero />
+    <div class="section-glow">
+      <About />
+    </div>
+    <div class="section-glow">
+      <ProjectCards client:visible />
+    </div>
+    <div class="section-glow">
+      <GastronomyGrid />
+    </div>
+    <div class="section-glow">
+      <MemoriesGrid />
+    </div>
+  </main>
+  <Footer />
+</Layout>
