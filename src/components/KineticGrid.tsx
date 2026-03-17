@@ -17,7 +17,7 @@ const RIPPLE_MAX_RADIUS = 300;
 const RIPPLE_STRENGTH = 20;
 const RIPPLE_MAX_AGE = 90;
 const RIPPLE_RING_WIDTH = 40;
-const ALPHA_BUCKETS = 10;
+const ALPHA_BUCKETS = 4;
 const LINE_WIDTH_BASE = 0.5;
 const LINE_WIDTH_PEAK = 1.0;
 const OFF_SCREEN = -9999;
@@ -42,8 +42,8 @@ function getColors(isDark: boolean) {
   if (isDark) {
     return {
       r: 255, g: 255, b: 255,
-      alphaBase: 0.04,
-      alphaPeak: 0.25,
+      alphaBase: 0.02,
+      alphaPeak: 0.12,
     };
   }
   return {

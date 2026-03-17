@@ -53,7 +53,7 @@ import '../styles/animations.css';
       })();
     </script>
   </head>
-  <body class="font-body antialiased">
+  <body class="font-body antialiased spotlight-active">
     <!-- Aurora background layer -->
     <div class="aurora-bg" aria-hidden="true"></div>
 
@@ -73,7 +73,7 @@ import '../styles/animations.css';
           <button class="kb-key" data-key="p"><kbd>P</kbd><span>work</span></button>
           <button class="kb-key" data-key="g"><kbd>G</kbd><span>gastro</span></button>
           <button class="kb-key" data-key="m"><kbd>M</kbd><span>memories</span></button>
-          <button class="kb-key" data-key="s"><kbd>S</kbd><span>spot</span></button>
+          <button class="kb-key" data-key="S" data-shift="true"><kbd>⇧S</kbd><span>spot</span></button>
           <button class="kb-key" data-key="l"><kbd>L</kbd><span>cursor</span></button>
           <button class="kb-key kb-key--close" data-key="Escape"><kbd>esc</kbd><span>close</span></button>
         </div>
@@ -101,7 +101,7 @@ import '../styles/animations.css';
         padding: 16px 20px 24px;
         background: var(--nav-bg);
         backdrop-filter: blur(24px) saturate(160%);
-        -webkit-backdrop-filter: blur(24px) saturate(160%);
+
         border-top: 1px solid var(--surface-border);
         border-radius: 1.25rem 1.25rem 0 0;
         box-shadow: 0 -8px 40px -8px rgba(0,0,0,0.12), 0 0 0 1px var(--surface-border);
@@ -161,10 +161,25 @@ import '../styles/animations.css';
         btn.addEventListener('click', () => {
           const key = btn.dataset.key;
           if (key) {
-            document.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+            const shiftKey = btn.dataset.shift === 'true';
+            document.dispatchEvent(new KeyboardEvent('keydown', { key, shiftKey, bubbles: true }));
           }
         });
       });
+
+      // Section transition observer — triggers entrance animations
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('section-entered');
+              sectionObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      );
+      document.querySelectorAll('.section-glow').forEach((el) => sectionObserver.observe(el));
     </script>
   </body>
 </html>

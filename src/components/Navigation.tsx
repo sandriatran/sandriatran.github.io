@@ -92,7 +92,6 @@ export default function Navigation() {
         style={{
           background: 'var(--nav-bg)',
           backdropFilter: 'blur(20px) saturate(160%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(160%)',
           border: '1px solid var(--nav-border)',
           boxShadow: 'var(--nav-shadow)',
           pointerEvents: 'auto',

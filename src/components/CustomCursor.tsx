@@ -76,32 +76,50 @@ export default function CustomCursor() {
   useEffect(() => {
     if (!canHover || !enabled) return;
 
-    const onMove = (e: MouseEvent) => {
+    // Use event delegation — check if hovered element is interactive
+    const isInteractive = (el: Element | null): boolean => {
+      if (!el) return false;
+      const tag = el.tagName;
+      if (tag === 'A' || tag === 'BUTTON' || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
+      const node = el as HTMLElement;
+      if (node.getAttribute('role') === 'button') return true;
+      if (node.tabIndex >= 0 && node.tabIndex !== -1) return true;
+      if (node.style?.cursor === 'pointer') return true;
+      const computed = window.getComputedStyle(node);
+      if (computed.cursor === 'pointer') return true;
+      // Check parent (for cases like img inside a figure with cursor:pointer)
+      if (el.parentElement && el.parentElement !== document.body) {
+        const parentComputed = window.getComputedStyle(el.parentElement);
+        if (parentComputed.cursor === 'pointer') return true;
+      }
+      return false;
+    };
+
+    let hovering = false;
+    let hoverCheckFrame = 0;
+    const onMoveWithHover = (e: MouseEvent) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
+
+      // Throttle elementFromPoint to every 3rd frame to avoid layout thrashing
+      hoverCheckFrame++;
+      if (hoverCheckFrame % 3 !== 0) return;
+
+      const target = document.elementFromPoint(e.clientX, e.clientY);
+      const shouldHover = isInteractive(target);
+
+      if (shouldHover && !hovering) {
+        hovering = true;
+        ringRef.current?.classList.add('cursor-hover');
+        dotRef.current?.classList.add('cursor-hover');
+      } else if (!shouldHover && hovering) {
+        hovering = false;
+        ringRef.current?.classList.remove('cursor-hover');
+        dotRef.current?.classList.remove('cursor-hover');
+      }
     };
 
-    const onEnterInteractive = () => {
-      ringRef.current?.classList.add('cursor-hover');
-      dotRef.current?.classList.add('cursor-hover');
-    };
-    const onLeaveInteractive = () => {
-      ringRef.current?.classList.remove('cursor-hover');
-      dotRef.current?.classList.remove('cursor-hover');
-    };
-
-    const addInteractiveListeners = () => {
-      document.querySelectorAll('a, button, [role="button"]').forEach((el) => {
-        el.addEventListener('mouseenter', onEnterInteractive);
-        el.addEventListener('mouseleave', onLeaveInteractive);
-      });
-    };
-
-    window.addEventListener('mousemove', onMove);
-    addInteractiveListeners();
-
-    const observer = new MutationObserver(() => addInteractiveListeners());
-    observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('mousemove', onMoveWithHover);
 
     const animate = () => {
       const ring = ringRef.current;
@@ -122,9 +140,8 @@ export default function CustomCursor() {
     rafId.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mousemove', onMoveWithHover);
       cancelAnimationFrame(rafId.current);
-      observer.disconnect();
     };
   }, [canHover, enabled]);
 

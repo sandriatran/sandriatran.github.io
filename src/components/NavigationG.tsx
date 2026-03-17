@@ -18,7 +18,7 @@ const SECTIONS = [
 
 const SHORTCUT_KEYS = [
   { key: 'D', label: 'theme', eventKey: 'd' },
-  { key: 'S', label: 'spot', eventKey: 's' },
+  { key: '⇧S', label: 'spot', eventKey: 'S', shiftKey: true },
   { key: 'L', label: 'cursor', eventKey: 'l' },
   { key: '?', label: 'help', eventKey: '?' },
 ] as const;
@@ -177,8 +177,8 @@ export default function NavigationG() {
     e.preventDefault();
   }, []);
 
-  const dispatchShortcut = useCallback((key: string) => {
-    window.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+  const dispatchShortcut = useCallback((key: string, shiftKey = false) => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key, shiftKey, bubbles: true }));
     setShowPopover(false);
   }, []);
 
@@ -197,7 +197,6 @@ export default function NavigationG() {
           style={{
             background: 'var(--nav-bg)',
             backdropFilter: 'blur(20px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(160%)',
             border: '1px solid var(--nav-border)',
             boxShadow: 'var(--nav-shadow)',
             pointerEvents: 'auto',
@@ -300,15 +299,14 @@ export default function NavigationG() {
                 padding: '8px 12px',
                 background: 'var(--nav-bg)',
                 backdropFilter: 'blur(20px) saturate(160%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(160%)',
-                border: '1px solid var(--nav-border)',
+                    border: '1px solid var(--nav-border)',
                 boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
               }}
             >
-              {SHORTCUT_KEYS.map(({ key, label, eventKey }) => (
+              {SHORTCUT_KEYS.map((sc) => (
                 <button
-                  key={key}
-                  onClick={() => dispatchShortcut(eventKey)}
+                  key={sc.key}
+                  onClick={() => dispatchShortcut(sc.eventKey, 'shiftKey' in sc && sc.shiftKey)}
                   className="flex h-8 w-8 items-center justify-center rounded-full font-accent text-xs font-bold transition-colors"
                   style={{
                     background: 'var(--surface-bg)',
@@ -316,10 +314,10 @@ export default function NavigationG() {
                     color: 'var(--nav-text)',
                     boxShadow: '0 1px 2px rgba(0,0,0,0.08)',
                   }}
-                  aria-label={label}
-                  title={label}
+                  aria-label={sc.label}
+                  title={sc.label}
                 >
-                  {key}
+                  {sc.key}
                 </button>
               ))}
             </div>
@@ -332,7 +330,6 @@ export default function NavigationG() {
           style={{
             background: 'var(--nav-bg)',
             backdropFilter: 'blur(20px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(160%)',
             borderTop: '1px solid var(--nav-border)',
             padding: '8px 12px',
             paddingBottom: 'calc(8px + env(safe-area-inset-bottom, 0px))',

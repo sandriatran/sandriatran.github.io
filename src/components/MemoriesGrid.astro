@@ -1,6 +1,11 @@
 ---
 /**
- * Memories Section — Photo Mosaic Grid
+ * Memories Section — "Polaroid Scatter" Layout
+ *
+ * Photos displayed as scattered Polaroid prints on a dark surface.
+ * Each has a white border (thicker on bottom), slight random rotation,
+ * and overlapping neighbours. Hover lifts a polaroid above the stack.
+ * Click opens lightbox.
  */
 
 import fs from 'node:fs';
@@ -19,16 +24,19 @@ try {
   // Directory not populated yet
 }
 
-const totalCount = memoryImages.length;
-const displayCount = totalCount; // Show all available images naturally
+// Deterministic "random" values seeded from index
+function seededValue(i: number, offset: number, min: number, max: number): number {
+  const seed = ((i * 2654435761 + offset * 1597334677) >>> 0) / 4294967296;
+  return min + seed * (max - min);
+}
 
-const getSpanClass = (i: number): string => {
-  // Adjusted math for a more balanced look with fewer photos
-  if (i === 0) return 'col-span-2 row-span-2';
-  if (i % 5 === 2) return 'col-span-2 row-span-2';
-  if (i % 8 === 4) return 'col-span-2';
-  return '';
-};
+// Assign each polaroid to a "cluster" row to create organic grouping
+function getClusterOffset(i: number): { marginTop: number; marginLeft: number } {
+  return {
+    marginTop: Math.round(seededValue(i, 10, -12, 12)),
+    marginLeft: Math.round(seededValue(i, 20, -8, 8)),
+  };
+}
 ---
 
 <section id="memories" class="relative">
@@ -42,22 +50,41 @@ const getSpanClass = (i: number): string => {
   </div>
 
   {memoryImages.length > 0 ? (
-    <div class="mx-auto grid max-w-6xl grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-3 overflow-hidden px-6 sm:auto-rows-[220px] sm:grid-cols-3 sm:px-8 md:grid-cols-4 lg:grid-cols-5">
-      {memoryImages.slice(0, displayCount).map((src, i) => (
-        <figure
-          class={`memory-reveal memory-item group relative cursor-pointer overflow-hidden rounded-xl ${getSpanClass(i)}`}
-          style={`--reveal-delay: ${(i % 10) * 50}ms;`}
-          data-lightbox-src={src}
-        >
-          <img
-            src={src}
-            alt={`Personal photograph ${i + 1} of ${displayCount}`}
-            loading="lazy"
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-            style="background: var(--surface);"
-          />
-        </figure>
-      ))}
+    <div class="polaroid-surface mx-auto max-w-6xl px-6 sm:px-8">
+      <div class="polaroid-grid">
+        {memoryImages.map((src, i) => {
+          const rotation = seededValue(i, 1, -6, 6);
+          const cluster = getClusterOffset(i);
+          const delay = (i % 14) * 40;
+          const zBase = Math.round(seededValue(i, 30, 1, 10));
+
+          return (
+            <figure
+              class="memory-reveal polaroid-item"
+              style={`
+                --polaroid-rotation: ${rotation.toFixed(1)}deg;
+                --reveal-delay: ${delay}ms;
+                --z-base: ${zBase};
+                margin-top: ${cluster.marginTop}px;
+              `}
+              data-lightbox-src={src}
+            >
+              <div class="polaroid-frame">
+                <div class="polaroid-image-wrap">
+                  <img
+                    src={src}
+                    alt={`Memory ${i + 1}`}
+                    loading="lazy"
+                    class="polaroid-img"
+                    style="background: var(--surface);"
+                  />
+                </div>
+                <div class="polaroid-caption" aria-hidden="true"></div>
+              </div>
+            </figure>
+          );
+        })}
+      </div>
     </div>
   ) : (
     <p class="text-center text-sm" style="color: var(--text-secondary);">
@@ -67,19 +94,133 @@ const getSpanClass = (i: number): string => {
 </section>
 
 <style>
+  /* Surface — subtle dark desk texture */
+  .polaroid-surface {
+    position: relative;
+  }
+
+  /* Grid — wrapping flex with negative margins for overlap */
+  .polaroid-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 640px) {
+    .polaroid-grid {
+      gap: 2px;
+    }
+  }
+
+  /* Polaroid item */
+  .polaroid-item {
+    transform: rotate(var(--polaroid-rotation, 0deg));
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                z-index 0s,
+                filter 0.4s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: var(--z-base, 1);
+    width: calc(33.33% - 8px);
+    min-width: 100px;
+  }
+
+  @media (min-width: 640px) {
+    .polaroid-item {
+      width: calc(20% - 2px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .polaroid-item {
+      width: calc(16.66% - 4px);
+      margin: -6px;
+    }
+  }
+
+  .polaroid-item:hover {
+    transform: rotate(0deg) translateY(-14px) scale(1.05);
+    z-index: 50 !important;
+    filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.25));
+  }
+
+  :global(.dark) .polaroid-item:hover {
+    filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.5));
+  }
+
+  /* Polaroid frame — white border, thicker on bottom */
+  .polaroid-frame {
+    background: #fafaf8;
+    padding: 6px 6px 24px 6px;
+    border-radius: 2px;
+    box-shadow:
+      0 2px 8px -2px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.4s ease;
+  }
+
+  :global(.dark) .polaroid-frame {
+    background: #f0ede8;
+    box-shadow:
+      0 2px 8px -2px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .polaroid-frame {
+      padding: 8px 8px 32px 8px;
+    }
+  }
+
+  /* Image area */
+  .polaroid-image-wrap {
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #e8e8e4;
+  }
+
+  .polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .polaroid-item:hover .polaroid-img {
+    transform: scale(1.04);
+  }
+
+  /* Caption strip (decorative — empty, mimics polaroid bottom) */
+  .polaroid-caption {
+    height: 0;
+  }
+
+  /* Scroll reveal */
   .memory-reveal {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) rotate(var(--polaroid-rotation, 0deg));
   }
+
   .memory-reveal.visible {
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(0) rotate(var(--polaroid-rotation, 0deg));
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
 
-  .memory-item:hover img {
-    transform: scale(1.05);
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .polaroid-item,
+    .polaroid-img,
+    .polaroid-frame,
+    .memory-reveal {
+      transition: none !important;
+    }
+    .polaroid-item { transform: none !important; }
+    .memory-reveal { opacity: 1; transform: none; }
   }
 </style>
 
@@ -97,7 +238,7 @@ const getSpanClass = (i: number): string => {
   );
   document.querySelectorAll('.memory-reveal').forEach((el) => observer.observe(el));
 
-  document.querySelectorAll('.memory-item').forEach((item) => {
+  document.querySelectorAll('.polaroid-item').forEach((item) => {
     item.addEventListener('click', () => {
       const src = (item as HTMLElement).dataset.lightboxSrc;
       if (src) {

@@ -17,29 +17,26 @@ const socialLinks = [
     <div class="giant-footer__name-block">
       <a href="#hero" class="giant-footer__name font-display" aria-label="Back to top">
         <span class="giant-footer__line1">sandria</span>
-        <span class="giant-footer__line2">
-          <span class="giant-footer__tran">tran</span>
-          <!-- Social links float in the negative space next to "tran" -->
-          <!-- ZONE 2: SOCIALS -->
-          <nav class="flex justify-center items-center gap-4 md:col-span-2 lg:col-span-1 order-3 lg:order-2 mt-8 lg:mt-0 font-accent tracking-widest uppercase text-xs" aria-label="Social links">
-            {socialLinks.map((link, index) => (
-              <Fragment key={link.href}>
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200"
-                >
-                  {link.label === 'Instagram' ? 'IG' : link.label}
-                </a>
-                {index < socialLinks.length - 1 && (
-                  <span class="text-[var(--text-secondary)] opacity-40 select-none">&middot;</span>
-                )}
-              </Fragment>
-            ))}
-          </nav>
-        </span>
+        <span class="giant-footer__line1">tran</span>
       </a>
+
+      <nav class="giant-footer__socials" aria-label="Social links">
+        {socialLinks.map((link, index) => (
+          <Fragment key={link.href}>
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200"
+            >
+              {link.label === 'Instagram' ? 'IG' : link.label}
+            </a>
+            {index < socialLinks.length - 1 && (
+              <span class="text-[var(--text-secondary)] opacity-40 select-none">&middot;</span>
+            )}
+          </Fragment>
+        ))}
+      </nav>
     </div>
 
     <!-- Bottom utility row -->
@@ -85,6 +82,7 @@ const socialLinks = [
   /* ─── Giant Name ─── */
   .giant-footer__name-block {
     margin-bottom: 40px;
+    text-align: center;
   }
 
   .giant-footer__name {
@@ -107,22 +105,24 @@ const socialLinks = [
     font-weight: 200;
   }
 
-  .giant-footer__line2 {
+  .giant-footer__socials {
     display: flex;
-    align-items: baseline;
-    gap: clamp(20px, 4vw, 60px);
-  }
-
-  .giant-footer__tran {
-    font-size: clamp(4rem, 12vw, 10rem);
-    font-weight: 200;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    font-family: var(--font-accent);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
   }
 
   /* ─── Bottom utility row ─── */
   .giant-footer__bottom {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 16px;
     font-size: 0.82rem;
@@ -217,14 +217,13 @@ const socialLinks = [
       margin-bottom: 28px;
     }
 
-    .giant-footer__line2 {
-      flex-direction: column;
-      gap: 16px;
+    .giant-footer__socials {
+      margin-top: 16px;
     }
 
     .giant-footer__bottom {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
     }
   }
