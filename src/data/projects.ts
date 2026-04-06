@@ -20,6 +20,22 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'sandriatran-com',
+    title: 'sandriatran.com',
+    description:
+      'A bespoke single-page portfolio built from scratch — glassmorphic aesthetic, adaptive light/dark theming, chromatic aberration cursor, iris-wipe navigation, polaroid memories grid, and masonry gastronomy gallery. Designed and engineered entirely by hand.',
+    image: '/images/projects/sandriatran-com.gif',
+    tags: ['Astro', 'React', 'Tailwind CSS', 'Framer Motion', 'Design Engineering'],
+    links: [
+      { label: 'Live Site', href: 'https://sandriatran.github.io' },
+      { label: 'GitHub', href: 'https://github.com/sandriatran/sandriatran.github.io' },
+    ],
+    color: '#d2bfd6',
+    challenge: 'Most portfolio templates feel generic — the challenge was building something that felt genuinely personal, technically ambitious, and visually cohesive across every interaction and screen size.',
+    process: 'Designed the full system from CSS custom properties up: a complete light/dark palette, glassmorphic surfaces, custom RAF cursor with chromatic velocity trails and a beacon ring, iris-wipe navigation overlay with drifting sparkles, and scroll-reveal animations throughout.',
+    outcome: 'A fully custom, performant portfolio — zero templates, static output via GitHub Actions, and an experience that reflects both the design and engineering sides of the practice.',
+  },
+  {
     id: 'soft-bunny-xx',
     title: 'The Soft Bunny xx',
     description:

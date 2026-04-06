@@ -24,11 +24,11 @@ pnpm-debug.log*
 .idea/
 
 # Local asset folders (too large for GitHub)
-Images/
-Projects/
-Typefaces/
-Vision (Textually)/
-Vision (Website)/
+/Images/
+/Projects/
+/Typefaces/
+/Vision (Textually)/
+/Vision (Website)/
 
 # Original large GIFs — only compressed/ subfolder is committed
 gifs/*.GIF
