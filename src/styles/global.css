@@ -150,6 +150,7 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  overscroll-behavior: none;
 }
 
 /* ── Film grain overlay: atmospheric texture across the whole page ── */
