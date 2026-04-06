@@ -23,7 +23,7 @@ export const projects: Project[] = [
     id: 'sandriatran-com',
     title: 'sandriatran.com',
     description:
-      'A bespoke single-page portfolio built from scratch — glassmorphic aesthetic, adaptive light/dark theming, chromatic aberration cursor, iris-wipe navigation, polaroid memories grid, and masonry gastronomy gallery. Designed and engineered entirely by hand.',
+      'A bespoke single-page portfolio built from scratch — glassmorphic aesthetic, adaptive light/dark theming, chromatic aberration cursor, iris-wipe navigation, polaroid memories grid, and masonry gastronomy gallery. Built with care.',
     image: '/images/projects/sandriatran-com.gif',
     tags: ['Astro', 'React', 'Tailwind CSS', 'Framer Motion', 'Design Engineering'],
     links: [
