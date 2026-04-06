@@ -1,61 +1,62 @@
-# sandriatran.com
+# sandria tran
 
-A single-page portfolio built with modern web technologies, designed around an ethereal glassmorphic aesthetic with full light/dark theme support.
+a personal portfolio and website.
 
-## Stack
+<br>
 
-- **Framework:** [Astro 6](https://astro.build/) with static output and islands architecture
-- **UI:** [React 19](https://react.dev/) for interactive components (project cards, navigation, lightbox, kinetic grid)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) via Vite plugin, augmented with custom CSS variables for theming
-- **Animation:** [Framer Motion](https://motion.dev/) for spring-based transitions, CSS keyframes for ambient effects
-- **Typography:** Cal Sans (display), Lexend Deca (body), Montserrat (UI accents), Cormorant Garamond (editorial)
-- **Deployment:** GitHub Pages via GitHub Actions (Node 22, automatic on push to `main`)
+![hero](gifs/compressed/horizontal%20dark%20mode%20-%20navigation.gif)
 
-## Architecture
+<br>
 
-```
-src/
-  components/    # Astro (.astro) + React (.tsx) islands
-  data/          # Project metadata (projects.ts)
-  layouts/       # Base HTML shell with theme init, meta, fonts
-  pages/         # Single index.astro composing all sections
-  styles/        # global.css (theme variables) + animations.css (keyframes)
-public/
-  fonts/         # Self-hosted Cal Sans TTF
-  images/        # Gastronomy, memories, project hero images
-```
+## a little tour
 
-**Hydration strategy:** Navigation, lightbox, cursor, and kinetic grid hydrate on load (`client:load`). Project cards hydrate on scroll into view (`client:visible`). All other sections are zero-JS static HTML.
+**light mode** — blush and lavender, soft bokeh orbs, a plum-ink cursor ring that dissolves when you hover over something.
 
-## Design System
+![light mode](gifs/compressed/vertical%20-%20light%20mode.gif)
 
-**Theme:** CSS custom properties define a complete light/dark palette — pastel lavender/pink/cream in light mode, deep midnight blues with boosted contrast in dark mode. Theme persists via `localStorage` and respects `prefers-color-scheme`.
+<br>
 
-**Glassmorphism:** Layered `backdrop-filter: blur()` with semi-transparent surfaces, used across navigation, project cards, keyboard shortcuts tray, and the N-Back game overlay.
+**dark mode** — deep midnight, chromatic aberration cursor (pink · white · blue dots that fan apart as you move), prismatic beacon ring.
 
-**Bokeh atmosphere:** Six animated CSS gradient orbs with staggered `ease-in-out` keyframes create a floating light effect. In dark mode, `mix-blend-mode` switches from `screen` to `normal` for visibility.
+![dark mode](gifs/compressed/vertical%20-%20dark%20mode.gif)
 
-**Responsive navigation:** Desktop shows a centered pill bar with expand/collapse on scroll direction. Mobile renders a bottom pill tab bar with horizontally scrollable sections and a pinned theme toggle.
+<br>
 
-## Features
+**theme toggle** — it switches gently. try pressing `D`.
 
-- Keyboard shortcuts (`H` `A` `P` `G` `M` `D` `S` `L` `?`) with bottom tray overlay
-- Custom cursor (toggle with `L`) with lerp-smoothed ring + dot tracking
-- Interactive spotlight mode (`S`) highlighting research terms in the About section
-- Canvas-based kinetic point grid responding to mouse position
-- Image lightbox with Framer Motion entrance animations
-- Masonry photo grids with `IntersectionObserver`-triggered reveal animations
-- Project drawer (slide-over panel) with spring transitions
-- Hidden N-Back cognitive game (`E`) with Web Speech API audio
-- Full `prefers-reduced-motion` support
-- WCAG AA contrast ratios in both themes
+![theme toggle](gifs/compressed/vertical%20-%20light%20to%20dark%20mode.gif)
 
-## Development
+<br>
 
-```bash
-npm install
-npm run dev      # localhost:4321
-npm run build    # static output to dist/
-```
+**navigation** — tap `ST` for an iris-wipe overlay with drifting sparkles and section links.
 
-Requires Node.js 22+.
+![navigation](gifs/compressed/navigation%20dark%20mode.gif)
+
+<br>
+
+## what's inside
+
+- **projects** — a horizontal carousel of work with slide-over detail panels
+- **about** — editorial two-column layout with a pull quote and social links
+- **gastronomy** — masonry photo grid with hover narrative cards
+- **memories** — scattered polaroid prints with a lightbox and "surprise me" button
+- **keyboard shortcuts** — press `?` to see them all (`H` `A` `P` `G` `M` `D` `L` ...)
+- **custom cursor** — chromatic velocity trails + a beacon ring, toggle with `L`
+- **full `prefers-reduced-motion` support** — no animation if you'd rather not
+
+<br>
+
+## stack
+
+| | |
+|---|---|
+| framework | [Astro 6](https://astro.build/) — static output, islands architecture |
+| ui | [React 19](https://react.dev/) for interactive components |
+| styling | [Tailwind CSS v4](https://tailwindcss.com/) + CSS custom properties for theming |
+| animation | [Framer Motion](https://motion.dev/) + CSS keyframes |
+| typography | Cal Sans · Lexend Deca · Montserrat · Cormorant Garamond |
+| deployment | GitHub Pages via GitHub Actions — auto-deploys on push to `main` |
+
+---
+
+*made with intention ♡ · © 2026 Sandria Tran*

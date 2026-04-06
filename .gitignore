@@ -29,3 +29,7 @@ Projects/
 Typefaces/
 Vision (Textually)/
 Vision (Website)/
+
+# Original large GIFs — only compressed/ subfolder is committed
+gifs/*.GIF
+gifs/*.gif
