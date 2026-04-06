@@ -1,6 +1,6 @@
 # sandria tran
 
-a personal portfolio and website.
+a personal portfolio and [website](https://www.sandriatran.com).
 
 <br>
 
