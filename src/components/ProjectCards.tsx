@@ -239,31 +239,31 @@ function ExpandedCard({ project, onClose }: { project: Project; onClose: () => v
         </div>
 
         {/* Content */}
-        <div className="px-10 pb-16 pt-8 lg:px-12">
-          <motion.h3 className="mb-4 font-display text-2xl sm:text-3xl" style={{ color: 'var(--text-primary)' }}
+        <div className="px-8 pb-20 pt-10 sm:px-12 lg:px-16">
+          <motion.h3 className="mb-5 font-display text-2xl sm:text-3xl" style={{ color: 'var(--text-primary)' }}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
             {project.title}
           </motion.h3>
-          <motion.p className="mb-8 text-[15px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}
+          <motion.p className="mb-10 max-w-[52ch] text-[15px] leading-[2]" style={{ color: 'var(--text-secondary)' }}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
             {project.description}
           </motion.p>
 
           {(project.challenge || project.process || project.outcome) && (
-            <motion.div className="mb-10 rounded-2xl p-6 flex flex-col gap-5"
+            <motion.div className="mb-12 rounded-2xl p-8 flex flex-col gap-8"
               style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)' }}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
               {project.challenge && <div>
-                <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Challenge</span>
-                <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.challenge}</p>
+                <span className="mb-2 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Challenge</span>
+                <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.challenge}</p>
               </div>}
               {project.process && <div>
-                <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Process</span>
-                <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.process}</p>
+                <span className="mb-2 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Process</span>
+                <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.process}</p>
               </div>}
               {project.outcome && <div>
-                <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Outcome</span>
-                <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.outcome}</p>
+                <span className="mb-2 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Outcome</span>
+                <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.outcome}</p>
               </div>}
             </motion.div>
           )}
