@@ -34,6 +34,16 @@ a personal portfolio and website.
 
 <br>
 
+**projects carousel** — horizontal and vertical views of the work cards with expandable detail modals.
+
+![projects horizontal](gifs/compressed/horizontal%20-%20project.gif)
+
+<br>
+
+![projects vertical](gifs/compressed/vertical%20-%20project.gif)
+
+<br>
+
 ## what's inside
 
 - **projects** — a horizontal carousel of work with slide-over detail panels
