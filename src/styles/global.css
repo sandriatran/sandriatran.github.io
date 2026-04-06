@@ -30,8 +30,9 @@
 :root {
   --bg-primary: #faedf0;
   --bg-secondary: #f4eae0;
-  --surface: rgba(227, 244, 255, 0.55);
-  --surface-border: rgba(210, 191, 214, 0.3);
+  --surface: rgba(227, 244, 255, 0.45);
+  --surface-border: rgba(210, 191, 214, 0.25);
+  --surface-matte: rgba(240, 235, 242, 0.65);
   --text-primary: #2d3a3a;
   --text-secondary: #4d5570;
   --accent-lavender: #d2bfd6;
@@ -81,6 +82,7 @@
   --bg-secondary: #0e1018;
   --surface: rgba(255, 255, 255, 0.07);
   --surface-border: rgba(255, 255, 255, 0.11);
+  --surface-matte: rgba(20, 18, 30, 0.55);
   --text-primary: #f4f0ff;
   --text-secondary: #c8c2e0;
   --accent-lavender: #e8d8f4;
@@ -293,8 +295,25 @@ body::after {
 }
 
 .project-card:hover {
-  box-shadow: var(--card-hover-shadow);
   border-color: transparent;
+  box-shadow:
+    0 0 0 1.5px rgba(210, 191, 214, 0.6),
+    0 0 0 3px rgba(173, 216, 230, 0.25),
+    0 0 0 5px rgba(255, 182, 193, 0.12),
+    0 12px 48px -8px rgba(210, 191, 214, 0.35),
+    0 0 80px -16px rgba(173, 216, 230, 0.3),
+    inset 0 0 24px rgba(255, 255, 255, 0.08);
+}
+
+.dark .project-card:hover {
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1.5px rgba(200, 180, 255, 0.45),
+    0 0 0 3px rgba(140, 200, 255, 0.2),
+    0 0 0 5px rgba(255, 160, 210, 0.1),
+    0 12px 48px -8px rgba(180, 160, 230, 0.3),
+    0 0 80px -16px rgba(140, 200, 255, 0.25),
+    inset 0 0 24px rgba(255, 255, 255, 0.03);
 }
 
 /* Expanded overlay card */
@@ -616,4 +635,171 @@ body.spotlight-active main {
 
 .dark body.spotlight-active main {
   opacity: 0.92;
+}
+
+/* ── Section atmospheric tints ── */
+#gastronomy {
+  background: color-mix(in srgb, var(--bg-primary) 93%, #c9a96e 7%);
+  transition: background 0.8s ease;
+}
+
+#memories {
+  background: color-mix(in srgb, var(--bg-primary) 94%, #8e8dad 6%);
+  transition: background 0.8s ease;
+}
+
+.dark #gastronomy {
+  background: color-mix(in srgb, var(--bg-primary) 94%, #5a3e1b 6%);
+}
+
+.dark #memories {
+  background: color-mix(in srgb, var(--bg-primary) 94%, #2a2640 6%);
+}
+
+/* ── Iridescent / Prismatic System ── */
+
+/* Rotating rainbow gradient used for borders */
+@keyframes prism-rotate {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+
+/* Shimmer sweep across a surface */
+@keyframes prism-shimmer {
+  0%   { left: -120%; opacity: 0; }
+  10%  { opacity: 1; }
+  100% { left: 120%; opacity: 0; }
+}
+
+/* Glass card — iridescent border on hover */
+.glass-card {
+  position: relative;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 182, 193, 0),
+    rgba(210, 191, 214, 0.6),
+    rgba(173, 216, 230, 0.5),
+    rgba(144, 238, 144, 0.3),
+    rgba(255, 255, 150, 0.4),
+    rgba(255, 182, 193, 0.5),
+    rgba(210, 191, 214, 0)
+  );
+  background-size: 300% 300%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: prism-rotate 4s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+}
+
+/* Project card — prismatic multi-color glow on hover */
+.project-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(210, 191, 214, 0.35),
+    0 8px 32px -4px rgba(210, 191, 214, 0.25),
+    0 0 60px -10px rgba(173, 216, 230, 0.2),
+    0 0 80px -20px rgba(255, 182, 193, 0.15),
+    inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .project-card:hover {
+  box-shadow:
+    0 0 0 1px rgba(210, 191, 214, 0.2),
+    0 8px 32px -4px rgba(140, 180, 220, 0.2),
+    0 0 60px -10px rgba(200, 160, 220, 0.15),
+    0 0 80px -20px rgba(173, 216, 230, 0.12),
+    inset 0 0 20px rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Prismatic shimmer sweep — applied to section headings */
+.prism-heading {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.prism-heading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(210, 191, 214, 0.18) 40%,
+    rgba(173, 216, 230, 0.15) 50%,
+    rgba(255, 182, 193, 0.12) 60%,
+    transparent 80%
+  );
+  transform: skewX(-20deg);
+  animation: prism-shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Prismatic shimmer on section h2s ── */
+#about h2,
+#projects h2,
+#gastronomy h2,
+#memories h2 {
+  position: relative;
+  overflow: hidden;
+}
+
+#about h2::after,
+#projects h2::after,
+#gastronomy h2::after,
+#memories h2::after {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -150%;
+  width: 70%;
+  height: 120%;
+  background: linear-gradient(
+    105deg,
+    transparent 15%,
+    rgba(210, 191, 214, 0.55) 38%,
+    rgba(173, 216, 230, 0.45) 50%,
+    rgba(255, 182, 193, 0.4) 62%,
+    transparent 85%
+  );
+  transform: skewX(-18deg);
+  animation: prism-shimmer 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+#projects h2::after   { animation-delay: 2.5s; }
+#gastronomy h2::after { animation-delay: 5s; }
+#memories h2::after   { animation-delay: 7.5s; }
+
+/* Active project card — vivid chromatic border (chromatic-border class already applied) */
+.chromatic-border::before {
+  opacity: 0.7 !important;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 182, 193, 0.9),
+    rgba(210, 191, 214, 0.8),
+    rgba(173, 216, 230, 0.9),
+    rgba(144, 238, 200, 0.7),
+    rgba(255, 220, 150, 0.8),
+    rgba(255, 182, 193, 0.9)
+  ) !important;
 }

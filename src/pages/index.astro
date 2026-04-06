@@ -11,6 +11,7 @@ import Lightbox from '../components/Lightbox.tsx';
 import KineticGrid from '../components/KineticGrid.tsx';
 import CustomCursor from '../components/CustomCursor.tsx';
 import NBackGame from '../components/NBackGame.tsx';
+import SectionIndicator from '../components/SectionIndicator.astro';
 ---
 
 <Layout>
@@ -19,6 +20,7 @@ import NBackGame from '../components/NBackGame.tsx';
   <CustomCursor client:load />
   <Navigation client:load />
   <Lightbox client:load />
+  <SectionIndicator />
 
   <main>
     <Hero />

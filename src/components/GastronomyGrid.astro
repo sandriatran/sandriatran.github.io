@@ -1,13 +1,14 @@
 ---
 /**
- * Gastronomy Section — Masonry Photo Grid
+ * Gastronomy Section — Masonry Photo Grid with hover narrative cards
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { getDishMeta } from '../data/gastronomy';
 
 const gastroDir = path.resolve('public/images/gastronomy');
-let images: { src: string; alt: string }[] = [];
+let images: { src: string; alt: string; name?: string; story?: string; season?: string }[] = [];
 
 try {
   const files = fs.readdirSync(gastroDir);
@@ -15,21 +16,26 @@ try {
   const isScreenshot = (name: string) => /^Screen/i.test(name);
   const isIMG = (name: string) => /^IMG[_-]/i.test(name);
 
-  // Build image list
   const allImages = files
     .filter((f: string) => /\.(webp|jpg|jpeg|png)$/i.test(f))
     .sort()
-    .map((f: string, i: number) => {
+    .map((f: string) => {
       const baseName = f.replace(/\.(webp|jpg|jpeg|png)$/i, '');
       let alt: string = '';
       if (!isUUID(baseName) && !isScreenshot(baseName) && !isIMG(baseName)) {
         alt = baseName.replace(/[-_+]/g, ' ').replace(/\s+/g, ' ').trim();
         alt = alt.charAt(0).toUpperCase() + alt.slice(1);
       }
-      return { src: `/images/gastronomy/${f}`, alt };
+      const meta = getDishMeta(f);
+      return {
+        src: `/images/gastronomy/${f}`,
+        alt: meta?.name || alt,
+        name: meta?.name,
+        story: meta?.story,
+        season: meta?.season,
+      };
     });
 
-  // Deduplicate by filename base (remove variants like "(1)")
   const seen = new Set<string>();
   images = allImages.filter(img => {
     const base = img.src.replace(/[-\s]*\(\d+\)/, '');
@@ -50,7 +56,7 @@ const getSpanClass = (i: number): string => {
 ---
 
 <section id="gastronomy" class="relative">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+  <div class="mx-auto w-full max-w-[1400px] px-8 sm:px-12">
     <div class="gastro-reveal mb-14 text-center">
       <h2
         class="mb-3 font-display text-4xl tracking-tight sm:text-5xl"
@@ -60,7 +66,7 @@ const getSpanClass = (i: number): string => {
       </h2>
     </div>
 
-    <div class="mx-auto grid max-w-6xl grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-3 overflow-hidden sm:auto-rows-[220px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+    <div class="grid grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-3 overflow-hidden sm:auto-rows-[220px] sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
     {images.map((img, i) => (
       <figure
         class={`gastro-reveal gastro-item group relative cursor-pointer overflow-hidden rounded-xl ${getSpanClass(i)}`}
@@ -74,6 +80,19 @@ const getSpanClass = (i: number): string => {
           class="h-full w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
           style="background: var(--surface);"
         />
+        {(img.name || img.story) && (
+          <div class="gastro-overlay absolute inset-0 flex flex-col justify-end rounded-xl p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {img.name && (
+              <p class="gastro-dish-name mb-1 font-serif italic leading-tight">{img.name}</p>
+            )}
+            {img.story && (
+              <p class="gastro-dish-story leading-snug">{img.story}</p>
+            )}
+            {img.season && (
+              <span class="gastro-season mt-2 inline-block self-start rounded-full px-2 py-0.5 font-accent text-[9px] uppercase tracking-widest">{img.season}</span>
+            )}
+          </div>
+        )}
       </figure>
     ))}
     </div>
@@ -90,6 +109,35 @@ const getSpanClass = (i: number): string => {
     transform: translateY(0);
     transition: opacity 0.6s ease, transform 0.6s ease;
     transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .gastro-overlay {
+    background: linear-gradient(transparent 15%, rgba(0, 0, 0, 0.72) 60%);
+    backdrop-filter: blur(0px);
+  }
+
+  .gastro-dish-name {
+    color: #ffffff;
+    font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+
+  .gastro-dish-story {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(0.65rem, 0.9vw, 0.75rem);
+    font-family: 'Lexend Deca', sans-serif;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .gastro-season {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Montserrat', sans-serif;
   }
 </style>
 

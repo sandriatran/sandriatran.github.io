@@ -1,0 +1,93 @@
+---
+/**
+ * SectionIndicator — Fixed right-side numbered section tracker.
+ * Visible on tablet/desktop (≥768px); hidden on mobile.
+ * The active section label is bold + fully opaque; others are faded.
+ */
+const sections = [
+  { id: 'hero',        label: '01' },
+  { id: 'about',       label: '02' },
+  { id: 'projects',    label: '03' },
+  { id: 'gastronomy',  label: '04' },
+  { id: 'memories',    label: '05' },
+];
+---
+
+<nav class="si" aria-label="Page section indicator">
+  {sections.map((s) => (
+    <a
+      href={`#${s.id}`}
+      class="si-num"
+      data-section={s.id}
+      aria-label={`Go to section ${s.label}`}
+    >
+      {s.label}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .si {
+    position: fixed;
+    right: max(1.25rem, 1.8vw);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    display: none;
+    flex-direction: column;
+    gap: 1.3rem;
+    align-items: flex-end;
+    pointer-events: auto;
+  }
+
+  @media (min-width: 768px) {
+    .si { display: flex; }
+  }
+
+  .si-num {
+    font-family: var(--font-accent);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    color: var(--text-primary);
+    text-decoration: none;
+    opacity: 0.28;
+    transition: opacity 0.35s ease;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .si-num.si-active {
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .si-num:hover:not(.si-active) {
+    opacity: 0.55;
+  }
+</style>
+
+<script>
+  const items = document.querySelectorAll<HTMLElement>('.si-num');
+
+  function setActive(id: string) {
+    items.forEach((item) => {
+      item.classList.toggle('si-active', item.dataset.section === id);
+    });
+  }
+
+  // Default: hero is active on load
+  setActive('hero');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    },
+    { threshold: 0, rootMargin: '-35% 0px -55% 0px' }
+  );
+
+  document.querySelectorAll<HTMLElement>('#hero, #about, #projects, #gastronomy, #memories')
+    .forEach((el) => observer.observe(el));
+</script>

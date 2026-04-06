@@ -66,9 +66,9 @@ export default function ProjectCards() {
   }, [activeIndex, total]);
 
   return (
-    <section id="projects" ref={sectionRef}>
+    <section id="projects" ref={sectionRef} style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
       <motion.div
-        className="mb-10 text-center sm:mb-14"
+        className="mb-10 px-8 text-center sm:mb-14 sm:px-12"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-100px' }}
@@ -477,6 +477,36 @@ function ExpandedCard({
           >
             {project.description}
           </motion.p>
+
+          {/* Case study — Challenge / Process / Outcome */}
+          {(project.challenge || project.process || project.outcome) && (
+            <motion.div
+              className="mb-10 rounded-2xl p-6 flex flex-col gap-5"
+              style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)' }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.22 }}
+            >
+              {project.challenge && (
+                <div>
+                  <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Challenge</span>
+                  <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.challenge}</p>
+                </div>
+              )}
+              {project.process && (
+                <div>
+                  <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Process</span>
+                  <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.process}</p>
+                </div>
+              )}
+              {project.outcome && (
+                <div>
+                  <span className="mb-1.5 block font-accent text-[10px] font-semibold uppercase tracking-[0.15em]" style={{ color: 'var(--accent-indigo)' }}>Outcome</span>
+                  <p className="text-[14px] leading-[1.8]" style={{ color: 'var(--text-secondary)' }}>{project.outcome}</p>
+                </div>
+              )}
+            </motion.div>
+          )}
 
           {/* Tags */}
           <motion.div

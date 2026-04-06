@@ -17,7 +17,14 @@ const socialLinks = [
 ---
 
 <section id="about" class="relative overflow-hidden" style="padding-top: 120px;">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+  <!-- Glassmorphic geometric shapes that respond to scroll -->
+  <div class="about-geo-container" aria-hidden="true">
+    <div class="about-geo about-geo--1"></div>
+    <div class="about-geo about-geo--2"></div>
+    <div class="about-geo about-geo--3"></div>
+  </div>
+
+  <div class="mx-auto w-full max-w-[1400px] px-8 sm:px-12">
     <div class="about-reveal">
 
       <div class="mb-10 text-center">
@@ -114,7 +121,80 @@ const socialLinks = [
 </section>
 
 <style>
+  /* ── Glassmorphic geometric shapes ── */
+  .about-geo-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .about-geo {
+    position: absolute;
+    border-radius: 2rem;
+    background: var(--surface-matte, var(--surface));
+    backdrop-filter: blur(40px) saturate(120%);
+    border: 1px solid var(--surface-border);
+    opacity: 0;
+    transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .about-geo--1 {
+    width: 220px;
+    height: 220px;
+    top: 40px;
+    right: -40px;
+    transform: rotate(15deg) translate(60px, -40px);
+    animation: geo-drift-1 20s ease-in-out infinite;
+  }
+
+  .about-geo--2 {
+    width: 160px;
+    height: 160px;
+    bottom: 20%;
+    left: -30px;
+    border-radius: 50%;
+    transform: translate(-40px, 30px);
+    animation: geo-drift-2 25s ease-in-out infinite;
+  }
+
+  .about-geo--3 {
+    width: 120px;
+    height: 120px;
+    top: 50%;
+    right: 10%;
+    transform: rotate(-10deg) translate(20px, 20px);
+    animation: geo-drift-3 18s ease-in-out infinite;
+  }
+
+  :global(.section-entered) .about-geo {
+    opacity: 0.5;
+  }
+
+  :global(.dark) .about-geo {
+    opacity: 0;
+  }
+  :global(.dark) :global(.section-entered) .about-geo {
+    opacity: 0.3;
+  }
+
+  @keyframes geo-drift-1 {
+    0%, 100% { transform: rotate(15deg) translate(0, 0); }
+    50% { transform: rotate(18deg) translate(-20px, 15px); }
+  }
+  @keyframes geo-drift-2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(15px, -20px); }
+  }
+  @keyframes geo-drift-3 {
+    0%, 100% { transform: rotate(-10deg) translate(0, 0); }
+    50% { transform: rotate(-6deg) translate(-15px, -10px); }
+  }
+
   .about-reveal {
+    position: relative;
+    z-index: 1;
     opacity: 0;
     transform: translateY(40px);
   }

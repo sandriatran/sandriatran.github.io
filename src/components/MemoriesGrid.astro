@@ -6,20 +6,31 @@
  * Each has a white border (thicker on bottom), slight random rotation,
  * and overlapping neighbours. Hover lifts a polaroid above the stack.
  * Click opens lightbox.
+ *
+ * Includes: tag filter bar, hover captions, random memory button.
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { getMemoryMeta, ALL_TAGS } from '../data/memories';
 
 const memoriesDir = path.resolve('public/images/memories');
-let memoryImages: string[] = [];
+let memoryImages: { src: string; filename: string; caption: string; tags: string[] }[] = [];
 
 try {
   const files = fs.readdirSync(memoriesDir);
   memoryImages = files
     .filter((f: string) => /\.(webp|jpg|jpeg|png)$/i.test(f))
     .sort()
-    .map((f: string) => `/images/memories/${f}`);
+    .map((f: string) => {
+      const meta = getMemoryMeta(f);
+      return {
+        src: `/images/memories/${f}`,
+        filename: f,
+        caption: meta?.caption ?? '',
+        tags: meta?.tags ?? ALL_TAGS,
+      };
+    });
 } catch {
   // Directory not populated yet
 }
@@ -40,7 +51,7 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
 ---
 
 <section id="memories" class="relative">
-  <div class="memory-reveal mb-14 text-center">
+  <div class="memory-reveal mb-10 text-center">
     <h2
       class="mb-3 font-display text-4xl tracking-tight sm:text-5xl"
       style="color: var(--text-primary);"
@@ -49,10 +60,18 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
     </h2>
   </div>
 
+  {/* Random button */}
+  <div class="memory-reveal mb-12 flex justify-center">
+    <button class="memory-random-btn" id="memory-random-btn" aria-label="Open a random memory">
+      <span class="memory-random-icon">↻</span>
+      <span>surprise me</span>
+    </button>
+  </div>
+
   {memoryImages.length > 0 ? (
-    <div class="polaroid-surface mx-auto max-w-6xl px-6 sm:px-8">
-      <div class="polaroid-grid">
-        {memoryImages.map((src, i) => {
+    <div class="polaroid-surface mx-auto w-full max-w-[1400px] px-8 sm:px-12">
+      <div class="polaroid-grid" id="polaroid-grid">
+        {memoryImages.map((mem, i) => {
           const rotation = seededValue(i, 1, -6, 6);
           const cluster = getClusterOffset(i);
           const delay = (i % 14) * 40;
@@ -67,19 +86,21 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
                 --z-base: ${zBase};
                 margin-top: ${cluster.marginTop}px;
               `}
-              data-lightbox-src={src}
+              data-lightbox-src={mem.src}
             >
               <div class="polaroid-frame">
                 <div class="polaroid-image-wrap">
                   <img
-                    src={src}
-                    alt={`Memory ${i + 1}`}
+                    src={mem.src}
+                    alt={mem.caption || `Memory`}
                     loading="lazy"
                     class="polaroid-img"
                     style="background: var(--surface);"
                   />
                 </div>
-                <div class="polaroid-caption" aria-hidden="true"></div>
+                {mem.caption && (
+                  <div class="polaroid-caption" aria-hidden="true">{mem.caption}</div>
+                )}
               </div>
             </figure>
           );
@@ -105,8 +126,7 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
     flex-wrap: wrap;
     justify-content: center;
     gap: 4px;
-    max-width: 1100px;
-    margin: 0 auto;
+    width: 100%;
   }
 
   @media (min-width: 640px) {
@@ -120,12 +140,15 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
     transform: rotate(var(--polaroid-rotation, 0deg));
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                 z-index 0s,
-                filter 0.4s ease;
+                filter 0.4s ease,
+                opacity 0.35s ease,
+                scale 0.35s ease;
     cursor: pointer;
     position: relative;
     z-index: var(--z-base, 1);
     width: calc(33.33% - 8px);
     min-width: 100px;
+    flex-shrink: 0;
   }
 
   @media (min-width: 640px) {
@@ -137,7 +160,7 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
   @media (min-width: 1024px) {
     .polaroid-item {
       width: calc(16.66% - 4px);
-      margin: -6px;
+      margin: -8px 0;
     }
   }
 
@@ -193,9 +216,25 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
     transform: scale(1.04);
   }
 
-  /* Caption strip (decorative — empty, mimics polaroid bottom) */
+  /* Caption strip — shows text in the white bottom area */
   .polaroid-caption {
-    height: 0;
+    margin-top: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    color: #999;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 4px;
+  }
+
+  .polaroid-item:hover .polaroid-caption {
+    opacity: 1;
   }
 
   /* Scroll reveal */
@@ -209,6 +248,48 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
     transform: translateY(0) rotate(var(--polaroid-rotation, 0deg));
     transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Random button */
+  .memory-random-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    cursor: pointer;
+    border: 1px solid rgba(210, 191, 214, 0.5);
+    background: rgba(210, 191, 214, 0.12);
+    color: var(--text-primary);
+    backdrop-filter: blur(12px);
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    outline: none;
+    box-shadow: 0 0 20px rgba(210, 191, 214, 0.15), inset 0 0 12px rgba(255,255,255,0.04);
+  }
+
+  .memory-random-btn:hover {
+    background: rgba(210, 191, 214, 0.22);
+    border-color: rgba(210, 191, 214, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 24px rgba(210, 191, 214, 0.3), inset 0 0 12px rgba(255,255,255,0.06);
+  }
+
+  .memory-random-btn:active {
+    transform: translateY(0px);
+  }
+
+  .memory-random-icon {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .memory-random-btn:hover .memory-random-icon {
+    transform: rotate(180deg);
   }
 
   /* Reduced motion */
@@ -225,6 +306,7 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
 </style>
 
 <script>
+  // Scroll reveal
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -238,6 +320,7 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
   );
   document.querySelectorAll('.memory-reveal').forEach((el) => observer.observe(el));
 
+  // Lightbox
   document.querySelectorAll('.polaroid-item').forEach((item) => {
     item.addEventListener('click', () => {
       const src = (item as HTMLElement).dataset.lightboxSrc;
@@ -245,5 +328,17 @@ function getClusterOffset(i: number): { marginTop: number; marginLeft: number } 
         window.dispatchEvent(new CustomEvent('open-lightbox', { detail: { src } }));
       }
     });
+  });
+
+  // Random memory
+  const polaroids = document.querySelectorAll<HTMLElement>('.polaroid-item');
+  document.getElementById('memory-random-btn')?.addEventListener('click', () => {
+    const all = Array.from(polaroids);
+    if (all.length === 0) return;
+    const pick = all[Math.floor(Math.random() * all.length)] as HTMLElement;
+    const src = pick.dataset.lightboxSrc;
+    if (src) {
+      window.dispatchEvent(new CustomEvent('open-lightbox', { detail: { src } }));
+    }
   });
 </script>

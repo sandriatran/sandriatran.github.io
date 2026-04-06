@@ -22,3 +22,10 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Local asset folders (too large for GitHub)
+Images/
+Projects/
+Typefaces/
+Vision (Textually)/
+Vision (Website)/

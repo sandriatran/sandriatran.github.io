@@ -31,12 +31,12 @@
   <!-- ============ DESKTOP: Bokeh Immersion (centered) ============ -->
   <div class="hero-desktop relative z-10 flex flex-col items-center">
     <h1
-      class="hero-name font-display tracking-tight text-center"
+      class="hero-name hero-gradient-text font-display tracking-tight text-center"
       style="letter-spacing: -0.03em;"
       aria-label="Sandria Tran"
     >
-      <span class="hero-gradient-text mr-3 inline-block sm:mr-5">sandria</span>
-      <span class="hero-gradient-text hero-dissolve inline-block">tran</span>
+      <span class="mr-3 inline-block sm:mr-5">sandria</span>
+      <span class="inline-block">tran</span>
     </h1>
 
     <p
@@ -51,12 +51,12 @@
   <div class="hero-mobile relative z-10">
     <div class="hero-mobile-name">
       <h1
-        class="font-display"
+        class="hero-gradient-text font-display"
         style="letter-spacing: -0.03em;"
         aria-label="Sandria Tran"
       >
-        <span class="hero-mobile-line hero-gradient-text">sandria</span>
-        <span class="hero-mobile-line hero-gradient-text hero-dissolve-mobile">tran</span>
+        <span class="hero-mobile-line">sandria</span>
+        <span class="hero-mobile-line">tran</span>
       </h1>
     </div>
 
@@ -119,11 +119,6 @@
     line-height: 1;
   }
 
-  .hero-dissolve {
-    mask-image: linear-gradient(to right, black 30%, rgba(0,0,0,0.25) 70%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, black 30%, rgba(0,0,0,0.25) 70%, transparent 100%);
-  }
-
   .hero-byline {
     opacity: 0;
     animation: fade-in-up 0.7s ease forwards;
@@ -156,11 +151,6 @@
 
     .hero-mobile-line {
       display: block;
-    }
-
-    .hero-dissolve-mobile {
-      mask-image: linear-gradient(to right, black 55%, rgba(0,0,0,0.4) 100%);
-      -webkit-mask-image: linear-gradient(to right, black 55%, rgba(0,0,0,0.4) 100%);
     }
 
     .hero-mobile-divider {
