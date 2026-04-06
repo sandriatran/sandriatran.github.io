@@ -86,7 +86,6 @@ export default function ProjectCards() {
               const absOffset = Math.abs(offset);
               return (
                 <motion.article key={project.id} layout
-                  layoutId={isActive ? `card-${project.id}` : undefined}
                   className={`project-card ${isActive ? 'chromatic-border' : ''} absolute cursor-pointer overflow-hidden rounded-2xl`}
                   style={{ width: isActive ? '340px' : '260px', height: isActive ? '430px' : '360px', backdropFilter: 'blur(30px) saturate(140%)', zIndex: 10 - absOffset }}
                   initial={{ opacity: 0, x: offset * 280, scale: (isActive ? 1 : 0.82 - absOffset * 0.04) * 0.9 }}
@@ -208,20 +207,21 @@ function ExpandedCard({ project, onClose }: { project: Project; onClose: () => v
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         onClick={onClose} />
 
-      {/* Modal — morphs from card via layoutId */}
+      {/* Centering wrapper */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
       <motion.aside
-        layoutId={`card-${project.id}`}
-        className="fixed z-50 overflow-hidden rounded-2xl"
+        className="relative overflow-hidden rounded-2xl pointer-events-auto"
         style={{
-          width: 'min(680px, 90vw)',
-          maxHeight: '88vh',
-          top: '50%', left: '50%',
-          translateX: '-50%', translateY: '-50%',
+          width: 'min(680px, calc(100vw - 32px))',
+          maxHeight: 'calc(100vh - 32px)',
           background: 'var(--bg-primary)',
           border: '1px solid var(--surface-border)',
           boxShadow: '0 32px 80px rgba(0,0,0,0.25)',
           overflowY: 'auto',
         }}
+        initial={{ opacity: 0, scale: 0.94, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.94, y: 16 }}
         transition={{ type: 'spring', stiffness: 280, damping: 28 }}
       >
         {/* Close */}
@@ -239,57 +239,66 @@ function ExpandedCard({ project, onClose }: { project: Project; onClose: () => v
         </div>
 
         {/* Content */}
-        <div className="px-10 pb-20 pt-10 sm:px-14">
-          <motion.h3 className="mb-6 font-display text-2xl sm:text-3xl" style={{ color: 'var(--text-primary)' }}
+        <div style={{ padding: '24px 24px 32px' }}>
+          <motion.h3 className="mb-5 font-display text-2xl font-bold" style={{ color: 'var(--text-primary)' }}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}>
             {project.title}
           </motion.h3>
 
-          <motion.p className="mb-12 text-[15px] leading-[2]" style={{ color: 'var(--text-secondary)', maxWidth: '52ch' }}
+          <motion.p className="mb-8 text-[16px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}>
             {project.description}
           </motion.p>
 
           {(project.challenge || project.process || project.outcome) && (
-            <motion.div className="mb-12 rounded-2xl overflow-hidden"
-              style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)' }}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
+            <div className="mb-6 flex flex-col gap-4">
               {project.challenge && (
-                <div className="px-8 py-7">
-                  <span className="mb-3 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.6 }}>Challenge</span>
-                  <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.challenge}</p>
-                </div>
+                <motion.div className="rounded-xl"
+                  style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)', padding: '24px 28px' }}
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }}>
+                  <span className="mb-4 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.55 }}>Challenge</span>
+                  <p className="text-[15px] leading-[2]" style={{ color: 'var(--text-secondary)' }}>{project.challenge}</p>
+                </motion.div>
               )}
               {project.process && (
-                <div className="px-8 py-7" style={{ borderTop: '1px solid var(--surface-border)' }}>
-                  <span className="mb-3 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.6 }}>Process</span>
-                  <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.process}</p>
-                </div>
+                <motion.div className="rounded-xl"
+                  style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)', padding: '24px 28px' }}
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.26 }}>
+                  <span className="mb-4 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.55 }}>Process</span>
+                  <p className="text-[15px] leading-[2]" style={{ color: 'var(--text-secondary)' }}>{project.process}</p>
+                </motion.div>
               )}
               {project.outcome && (
-                <div className="px-8 py-7" style={{ borderTop: '1px solid var(--surface-border)' }}>
-                  <span className="mb-3 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.6 }}>Outcome</span>
-                  <p className="text-[14px] leading-[1.9]" style={{ color: 'var(--text-secondary)' }}>{project.outcome}</p>
-                </div>
+                <motion.div className="rounded-xl"
+                  style={{ background: 'var(--surface)', border: '1px solid var(--surface-border)', padding: '24px 28px' }}
+                  initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.30 }}>
+                  <span className="mb-4 block font-accent text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--text-secondary)', opacity: 0.55 }}>Outcome</span>
+                  <p className="text-[15px] leading-[2]" style={{ color: 'var(--text-secondary)' }}>{project.outcome}</p>
+                </motion.div>
               )}
-            </motion.div>
+            </div>
           )}
 
-          <motion.div className="mb-10 flex flex-wrap gap-2.5"
+          <motion.div
+            style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', margin: '28px 0' }}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}>
             {project.tags.map((tag) => (
-              <span key={tag} className="rounded-full px-4 py-1.5 text-[11px] font-medium tracking-wide"
-                style={{ background: 'var(--surface)', color: 'var(--text-secondary)', border: '1px solid var(--surface-border)' }}>{tag}</span>
+              <span key={tag}
+                style={{ background: 'var(--surface)', color: 'var(--text-secondary)', border: '1px solid var(--surface-border)', borderRadius: '9999px', padding: '6px 16px', fontSize: '12px', fontWeight: 500, letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>
+                {tag}
+              </span>
             ))}
           </motion.div>
 
           {project.links.length > 0 && (
-            <motion.div className="flex flex-wrap gap-3 pt-8" style={{ borderTop: '1px solid var(--surface-border)' }}
+            <motion.div
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid var(--surface-border)', paddingTop: '28px' }}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
               {project.links.map((link) => (
                 <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 hover:scale-105"
-                  style={{ background: 'var(--accent-blue)', color: 'var(--cta-button-text)' }}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--text-primary)', color: 'var(--bg-primary)', borderRadius: '9999px', padding: '16px 28px', fontSize: '15px', fontWeight: 600, textDecoration: 'none', transition: 'transform 0.2s ease', whiteSpace: 'nowrap' }}
+                  onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.04)')}
+                  onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
                   onClick={(e) => e.stopPropagation()}>
                   {link.label}
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 3h7v7M13 3L5 11" /></svg>
@@ -299,6 +308,7 @@ function ExpandedCard({ project, onClose }: { project: Project; onClose: () => v
           )}
         </div>
       </motion.aside>
+      </div>
     </>
   );
 }
